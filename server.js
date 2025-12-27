@@ -6,7 +6,7 @@ import UserRouter from "./routes/userRoute.js";
 import ResumeRouter from "./routes/resumeRoute.js";
 import AIRouter from "./routes/aiRoute.js";
 
-dotenv.config({ path: path.join(__dirname, ".env") });
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -31,3 +31,4 @@ connectDB();
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server listening on port ${port}`);
 });
+
