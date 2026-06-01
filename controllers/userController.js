@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
     return res.status(400).json({ message: "Please fill all the fields" });
   }
   //Check if user exists
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ email: { $eq: email } });
   if (userExists) {
     return res.status(400).json({ message: "User already exists" });
   }
@@ -43,7 +43,7 @@ const loginUser = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ message: "Please fill all the fields" });
   }
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: { $eq: email } });
   if (user && (await bcrypt.compare(password, user.password))) {
     const token = generateToken(user._id);
     return res.status(200).json({ message: "Login successful", user, token });

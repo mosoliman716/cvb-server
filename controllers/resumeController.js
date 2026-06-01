@@ -20,7 +20,7 @@ const deleteResume = async (req, res) => {
     const { resumeId } = req.body;
 
     const resume = await Resume.findOneAndDelete({
-      _id: resumeId,
+      _id: { $eq: resumeId },
       _userId: userId,
     });
     if (resume) {
@@ -49,7 +49,7 @@ const updateResume = async (req, res) => {
   const { resumeId, resumeData } = req.body;
 
   const resume = await Resume.findOneAndUpdate(
-    { _userId: userId, _id: resumeId },
+    { _userId: userId, _id: { $eq: resumeId } },
     resumeData,
     { new: true }
   );
