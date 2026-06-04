@@ -1,5 +1,41 @@
 import Resume from "../models/resume.js";
 
+const sanitizeResumeUpdate = (resumeData) => {
+  const allowedFields = [
+    "title",
+    "personalInfo",
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "projects",
+    "certifications",
+    "languages",
+    "awards",
+    "interests",
+  ];
+
+  if (
+    !resumeData ||
+    typeof resumeData !== "object" ||
+    Array.isArray(resumeData)
+  ) {
+    return null;
+  }
+
+  const sanitized = {};
+  for (const key of Object.keys(resumeData)) {
+    if (key.startsWith("$") || key.includes(".")) {
+      continue;
+    }
+    if (allowedFields.includes(key)) {
+      sanitized[key] = resumeData[key];
+    }
+  }
+
+  return sanitized;
+};
+
 //POST: api/resume/create
 const createResume = async (req, res) => {
   const userId = req.userId;
@@ -48,9 +84,14 @@ const updateResume = async (req, res) => {
   const userId = req.userId;
   const { resumeId, resumeData } = req.body;
 
+  const safeResumeData = sanitizeResumeUpdate(resumeData);
+  if (!safeResumeData || Object.keys(safeResumeData).length === 0) {
+    return res.status(400).json({ message: "Invalid resume update payload" });
+  }
+
   const resume = await Resume.findOneAndUpdate(
     { _userId: userId, _id: resumeId },
-     resumeData, // security risk
+    safeResumeData,
     { new: true }
   );
   if (resume) {
