@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: true,
     credentials: true,
   }),
 );
@@ -32,4 +32,5 @@ connectDB();
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server listening on port ${port}`);
+  
 });

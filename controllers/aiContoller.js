@@ -3,6 +3,7 @@ import Resume from "../models/resume.js";
 
 const enhanceProfessionalSummary = async (req, res) => {
   const { summary } = req.body;
+  console.log(summary);
 
   const response = await ai.chat.completions.create({
     model: "gemini-2.5-flash",
