@@ -27,10 +27,12 @@ app.use(apiLimiter);
 app.use("/api/user", UserRouter);
 app.use("/api/resume", ResumeRouter);
 app.use("/api/ai", AIRouter);
+// Connect and listen only when not running tests so tests can import the app
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`Server listening on port ${port}`);
+  });
+}
 
-connectDB();
-
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server listening on port ${port}`);
-  
-});
+export default app;
