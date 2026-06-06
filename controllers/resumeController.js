@@ -90,7 +90,7 @@ const updateResume = async (req, res) => {
   }
 
   const resume = await Resume.findOneAndUpdate(
-    { _userId: userId, _id: resumeId },
+    { _userId: userId, _id: { $eq: resumeId } },
     safeResumeData,
     { new: true }
   );
